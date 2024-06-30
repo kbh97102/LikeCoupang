@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             LikeCoupangTheme {
 
                 val test by remember {
-                    mutableStateOf(Uri.parse("https://www.youtube.com/watch?v=yfwpObvMXWY"))
+                    mutableStateOf(Uri.parse("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8"))
                 }
 
                 VideoPlayer(uri = test)

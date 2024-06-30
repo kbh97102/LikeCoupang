@@ -22,6 +22,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.ui.PlayerView
 
@@ -34,21 +36,22 @@ fun VideoPlayer(
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
 
+    val dataSourceFactory by rememberUpdatedState(newValue = DefaultHttpDataSource.Factory())
 
-    val player by rememberUpdatedState(newValue = ExoPlayer.Builder(context).build())
+    val hlsMediaSource by rememberUpdatedState(newValue = HlsMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(uri)))
+
+    val player by rememberUpdatedState(newValue = ExoPlayer.Builder(context).build().apply {
+        setMediaSource(hlsMediaSource)
+    })
 
     val playerView = createPlayerView(player = player)
 
-    val mediaSource = remember(uri){
-        MediaItem.fromUri(uri)
-    }
 
     val enterFullScreen by rememberUpdatedState(newValue = {activity.requestedOrientation = SCREEN_ORIENTATION_USER_LANDSCAPE})
     val exitFullScreen by rememberUpdatedState(newValue = {activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER})
 
-    LaunchedEffect(key1 = mediaSource) {
-        player.setMediaItem(mediaSource)
-        player.prepare()
+    LaunchedEffect(key1 = Unit) {
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER
     }
 
     LaunchedEffect(key1 = playerView) {
@@ -85,6 +88,7 @@ private fun createPlayerView(player: Player): PlayerView{
     DisposableEffect(key1 = player) {
 
         playerView.player = player
+        player.prepare()
 
 
         onDispose {

@@ -70,4 +70,5 @@ dependencies {
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
     implementation(libs.androidx.media3.ui)
+    implementation("androidx.media3:media3-exoplayer-hls:1.3.1")
 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import arakene.likecoupang.ui.Main
 import arakene.likecoupang.ui.VideoPlayer
 import arakene.likecoupang.ui.theme.LikeCoupangTheme
 
@@ -22,12 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LikeCoupangTheme {
-
-                val test by remember {
-                    mutableStateOf(Uri.parse("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8"))
-                }
-
-                VideoPlayer(uri = test)
+                Main()
             }
         }
     }

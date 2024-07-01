@@ -60,7 +60,7 @@ fun VideoPlayer(
 
     LaunchedEffect(key1 = playerView) {
         playerView.apply {
-            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
             useController = false
             controllerAutoShow = false // 플레이 컨트롤러 자동 보이기
             keepScreenOn = true // 비디오 재생 중 화면 자동으로 꺼지지 않도록 설정

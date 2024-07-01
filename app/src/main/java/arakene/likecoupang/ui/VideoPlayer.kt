@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
@@ -25,11 +26,14 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.AspectRatioFrameLayout.ResizeMode
 import androidx.media3.ui.PlayerView
 
 @OptIn(UnstableApi::class)
 @Composable
 fun VideoPlayer(
+    modifier: Modifier = Modifier,
     uri: Uri
 ){
 
@@ -56,7 +60,9 @@ fun VideoPlayer(
 
     LaunchedEffect(key1 = playerView) {
         playerView.apply {
-            controllerAutoShow = true // 플레이 컨트롤러 자동 보이기
+            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            useController = false
+            controllerAutoShow = false // 플레이 컨트롤러 자동 보이기
             keepScreenOn = true // 비디오 재생 중 화면 자동으로 꺼지지 않도록 설정
             setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING) // 버퍼링 인디케이터가 반드시 표시되어야하는 경우 해당 함수 설정, 요 옵션은 비디오가 재생중일 때만 나타남
             setFullscreenButtonClickListener { isFullScreen ->
@@ -71,7 +77,11 @@ fun VideoPlayer(
         }
     }
 
-    AndroidView(factory = {playerView})
+    LaunchedEffect(key1 = player) {
+        player.playWhenReady = true
+    }
+
+    AndroidView(modifier = modifier, factory = {playerView})
 
 }
 
